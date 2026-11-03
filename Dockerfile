@@ -13,8 +13,8 @@ USER node-red
 # Place settings file in Node-RED default path
 COPY --chown=node-red:root settings.js /data/settings.js
 
-# Low-memory settings for Voroa Nano tier (enclosed in quotes)
-ENV NODE_OPTIONS="--max-old-space-size=128 --optimize-for-size"
+# Cap memory strictly using the allowed max-old-space-size flag
+ENV NODE_OPTIONS="--max-old-space-size=128"
 ENV PORT=1880
 
 EXPOSE 1880
@@ -22,6 +22,6 @@ EXPOSE 1880
 # Clear the base image entrypoint to prevent command argument collisions
 ENTRYPOINT []
 
-# Properly formatted JSON string array
+# Start Node-RED using custom settings and user directory
 CMD ["npm", "start", "--cache", "/data/.npm", "--", "--settings", "/data/settings.js", "--userDir", "/data"]
 
